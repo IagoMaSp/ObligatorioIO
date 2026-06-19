@@ -88,24 +88,37 @@ Asegúrese de tener instalado Python 3 en su sistema. Se recomienda utilizar el 
 
 ### Instrucciones de Ejecución
 
-1. **Abrir una terminal** en el directorio raíz del proyecto:
-   ```bash
-   cd /home/iaago/Documents/GitHub/ObligatorioIO
-   ```
+1. **Abrir una terminal** y navegar al directorio raíz del proyecto:
+```bash
+cd ruta/al/directorio/ObligatorioIO
+```
 
-2. **Activar el entorno virtual** de Python:
-   ```bash
-   source venv/bin/activate
-   ```
+2. **Crear y activar un entorno virtual** de Python:
+En Linux/macOS:
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-3. **Iniciar la aplicación de Streamlit**:
-   ```bash
-   streamlit run app.py
-   ```
-   O de forma directa utilizando el intérprete de comandos del entorno virtual:
-   ```bash
-   venv/bin/python -m streamlit run app.py
-   ```
 
-4. **Acceder a la interfaz**:
-   Una vez que el comando esté en ejecución, se abrirá automáticamente una pestaña en su navegador web. Si no ocurre, puede ingresar manualmente a la dirección que se muestre en la terminal (usualmente `http://localhost:8501`).
+En Windows:
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+
+3. **Instalar las dependencias** requeridas:
+```bash
+pip install -r requirements.txt
+```
+
+
+4. **Iniciar la aplicación de Streamlit**:
+```bash
+streamlit run app.py
+```
+
+
+5. **Acceder a la interfaz**:
+Una vez que el comando esté en ejecución, se abrirá automáticamente una pestaña en su navegador web. Si no ocurre, puede ingresar manualmente a la dirección que se muestre en la terminal (usualmente http://localhost:8501).
