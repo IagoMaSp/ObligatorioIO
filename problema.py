@@ -5,24 +5,24 @@ def obtener_datos_por_defecto():
     """Retorna los datos de cirugías y cirujanos por defecto para pruebas."""
     cirugias_raw = [
         # (id, nombre, bloques_operacion, bloques_limpieza, es_contaminada, prioridad, especialidad_requerida)
-        (1,  "Cateterización venosa central compleja",  1,  1, 0, 2, "Cirugía General"),
-        (2,  "Cateterización venosa central compleja",  1,  1, 0, 2, "Cirugía General"),
-        (3,  "Apendicectomía",                          2,  1, 0, 4, "Cirugía General"),
-        (4,  "Apendicectomía laparoscópica",            2,  1, 0, 4, "Cirugía General"),
-        (5,  "Hernia inguinal",                         2,  1, 0, 3, "Cirugía General"),
-        (6,  "Hernia inguinal",                         2,  1, 0, 3, "Cirugía General"),
-        (7,  "Hernia umbilical",                        2,  1, 0, 3, "Cirugía General"),
-        (8,  "Colecistectomía laparoscópica",           2,  1, 0, 4, "Cirugía General"),
-        (9,  "Apendicectomía (paciente KPC+)",          2,  2, 1, 4, "Cirugía General"),
-        (10, "Hernia inguinal (paciente NDM+)",         2,  2, 1, 3, "Cirugía General"),
-        (11, "Puente arterial femoropoplíteo",          10, 1, 0, 5, "Cirugía Vascular"),
-        (12, "Puente arterial femoropoplíteo",          10, 1, 0, 5, "Cirugía Vascular"),
-        (13, "Endarterectomía carotídea",               8,  1, 0, 5, "Cirugía Vascular"),
-        (14, "Aneurisma aórtico abdominal",             12, 1, 0, 5, "Cirugía Vascular"),
-        (15, "Reconstrucción vascular compleja",        10, 1, 0, 5, "Cirugía Vascular"),
-        (16, "Neurocirugía (tumor)",                    20, 1, 0, 5, "Neurocirugía"),
-        (17, "Linfadenectomía retroperitoneal",         20, 1, 0, 5, "Cirugía Oncológica"),
-        (18, "Cirugía retroperitoneal compleja",        19, 1, 0, 5, "Cirugía Oncológica"),
+        (1,  "Cateterización venosa central compleja",  1,  1, 0, 3, "Cirugía General"),
+        (2,  "Cateterización venosa central compleja",  1,  1, 0, 3, "Cirugía General"),
+        (3,  "Apendicectomía",                          2,  1, 0, 7, "Cirugía General"),
+        (4,  "Apendicectomía laparoscópica",            2,  1, 0, 7, "Cirugía General"),
+        (5,  "Hernia inguinal",                         2,  1, 0, 5, "Cirugía General"),
+        (6,  "Hernia inguinal",                         2,  1, 0, 5, "Cirugía General"),
+        (7,  "Hernia umbilical",                        2,  1, 0, 5, "Cirugía General"),
+        (8,  "Colecistectomía laparoscópica",           2,  1, 0, 7, "Cirugía General"),
+        (9,  "Apendicectomía (paciente KPC+)",          2,  2, 1, 7, "Cirugía General"),
+        (10, "Hernia inguinal (paciente NDM+)",         2,  2, 1, 5, "Cirugía General"),
+        (11, "Puente arterial femoropoplíteo",          10, 1, 0, 11, "Cirugía Vascular"),
+        (12, "Puente arterial femoropoplíteo",          10, 1, 0, 11, "Cirugía Vascular"),
+        (13, "Endarterectomía carotídea",               8,  1, 0, 11, "Cirugía Vascular"),
+        (14, "Aneurisma aórtico abdominal",             12, 1, 0, 11, "Cirugía Vascular"),
+        (15, "Reconstrucción vascular compleja",        10, 1, 0, 11, "Cirugía Vascular"),
+        (16, "Neurocirugía (tumor)",                    20, 1, 0, 11, "Neurocirugía"),
+        (17, "Linfadenectomía retroperitoneal",         20, 1, 0, 11, "Cirugía Oncológica"),
+        (18, "Cirugía retroperitoneal compleja",        19, 1, 0, 11, "Cirugía Oncológica"),
     ]
 
     cirujanos_raw = [
@@ -83,7 +83,7 @@ def optimizar_asignacion_quirofanos(datos_cirugias, datos_cirujanos, capacidad_s
     for i in ids_cirugias:
         requerimiento_soporte[(i, "anestesistas_g2")]  = 1
         requerimiento_soporte[(i, "circulantes")]      = 2 if es_contaminada[i] else 1
-        requerimiento_soporte[(i, "instrumentistas")]  = 2 if prioridad_cirugia[i] >= 5 else 1
+        requerimiento_soporte[(i, "instrumentistas")]  = 2 if prioridad_cirugia[i] >= 11 else 1
         requerimiento_soporte[(i, "camas_preanest")]   = 1
 
     # MODELO
@@ -190,9 +190,7 @@ def optimizar_asignacion_quirofanos(datos_cirugias, datos_cirujanos, capacidad_s
                 if tau in bloques_tiempo and (i, q, tau) in var_asignacion_inicio
             ]
             if ventana:
-                expr = xsum(ventana)
-                modelo += var_cirugia_activa_en_bloque[(i, t)] <= expr
-                modelo += var_cirugia_activa_en_bloque[(i, t)] >= expr / num_quirofanos
+                modelo += var_cirugia_activa_en_bloque[(i, t)] == xsum(ventana)
             else:
                 modelo += var_cirugia_activa_en_bloque[(i, t)] == 0
 

@@ -126,7 +126,7 @@ with tab_datos:
                 with c2:
                     bloques_op_c = st.number_input("Duracion Operacion (bloques 30 min)", min_value=1, max_value=24, value=2)
                     bloques_limp_c = st.number_input("Duracion Limpieza (bloques 30 min)", min_value=1, max_value=10, value=1)
-                    prioridad_c = st.slider("Prioridad Medica", 1, 5, 3)
+                    prioridad_c = st.select_slider("Prioridad Medica", options=[2, 3, 5, 7, 11], value=5)
                 
                 submitted = st.form_submit_button("Agregar Cirugia")
                 if submitted:
@@ -254,30 +254,33 @@ with tab_resultados:
             
             df_res = pd.DataFrame(res["programadas"])
             
-            # Agrupar por quirofano para mostrar de forma organizada
-            quirofanos_usados = sorted(df_res["quirofano"].unique())
-            
-            for q in quirofanos_usados:
-                st.markdown(f"<div class='quirofano-card'><h4>Quirofano {q}</h4>", unsafe_allow_html=True)
-                cirugias_q = df_res[df_res["quirofano"] == q].sort_values(by="inicio")
+            if df_res.empty:
+                st.info("No se programó ninguna cirugía con la configuración actual.")
+            else:
+                # Agrupar por quirofano para mostrar de forma organizada
+                quirofanos_usados = sorted(df_res["quirofano"].unique())
                 
-                for _, row in cirugias_q.iterrows():
-                    hora_inicio = slot_to_time(row["inicio"])
-                    hora_fin = slot_to_time(row["fin_limpieza"])
-                    contam_badge = "<span style='color: #E53E3E; font-weight: bold;'>[Contaminada: Si]</span>" if row["contaminada"] else "<span style='color: #38A169; font-weight: bold;'>[Contaminada: No]</span>"
+                for q in quirofanos_usados:
+                    st.markdown(f"<div class='quirofano-card'><h4>Quirofano {q}</h4>", unsafe_allow_html=True)
+                    cirugias_q = df_res[df_res["quirofano"] == q].sort_values(by="inicio")
                     
-                    st.markdown(f"""
-                    <div class='cirugia-item'>
-                        <div>
-                            <strong>{hora_inicio} - {hora_fin}</strong> | {row['nombre']} {contam_badge}
+                    for _, row in cirugias_q.iterrows():
+                        hora_inicio = slot_to_time(row["inicio"])
+                        hora_fin = slot_to_time(row["fin_limpieza"])
+                        contam_badge = "<span style='color: #E53E3E; font-weight: bold;'>[Contaminada: Si]</span>" if row["contaminada"] else "<span style='color: #38A169; font-weight: bold;'>[Contaminada: No]</span>"
+                        
+                        st.markdown(f"""
+                        <div class='cirugia-item'>
+                            <div>
+                                <strong>{hora_inicio} - {hora_fin}</strong> | {row['nombre']} {contam_badge}
+                            </div>
+                            <div style='color: #718096; font-size: 0.9em;'>
+                                {row['cirujano_nombre']} | {row['especialidad']}
+                            </div>
                         </div>
-                        <div style='color: #718096; font-size: 0.9em;'>
-                            {row['cirujano_nombre']} | {row['especialidad']}
-                        </div>
-                    </div>
-                    """, unsafe_allow_html=True)
-                
-                st.markdown("</div>", unsafe_allow_html=True)
+                        """, unsafe_allow_html=True)
+                    
+                    st.markdown("</div>", unsafe_allow_html=True)
                 
         else:
             st.error("El modelo no logro encontrar una solucion con los recursos proporcionados.")

@@ -38,7 +38,7 @@ Los parámetros son los valores de entrada conocidos que configuran el problema:
   * **Requerimientos de Soporte**:
     * Cada cirugía requiere 1 anestesista y 1 cama de preanestesia durante su ejecución.
     * Las cirugías contaminadas requieren 2 personas de personal circulante (en lugar de 1) debido a los protocolos de aislamiento.
-    * Las cirugías con prioridad alta (mayor o igual a 5) requieren 2 instrumentistas (en lugar de 1).
+    * Las cirugías con prioridad alta (igual a 11, correspondiente al nivel máximo en la escala 2, 3, 5, 7, 11) requieren 2 instrumentistas (en lugar de 1).
 
 ---
 
