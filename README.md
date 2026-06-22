@@ -78,6 +78,33 @@ El modelo de optimización debe satisfacer estrictamente las siguientes reglas p
 
 ---
 
+## Tecnologías Utilizadas
+
+El proyecto fue desarrollado utilizando las siguientes herramientas y tecnologías:
+
+- **Python 3** como lenguaje principal de programación.
+- **Streamlit** para la construcción de la interfaz gráfica interactiva.
+- **Programación Lineal Entera Mixta (MILP)** para el modelado matemático del problema.
+- **CBC** como solver para la resolución del problema MILP.
+
+---
+
+## Interpretación de Resultados
+
+Una vez ejecutado el modelo, la aplicación genera una planificación óptima de las cirugías para la jornada considerada.
+
+Entre los resultados obtenidos se incluyen:
+
+- Las cirugías que fueron seleccionadas para ser programadas.
+- El quirófano asignado a cada cirugía.
+- El bloque de tiempo de inicio de cada procedimiento.
+- El cirujano asignado a cada intervención.
+- El valor total de prioridad alcanzado por la solución.
+
+En aquellos casos donde los recursos disponibles no permiten programar todas las cirugías solicitadas, el modelo selecciona automáticamente la combinación que maximiza la prioridad total, respetando todas las restricciones operativas, de personal y de infraestructura definidas.
+
+---
+
 ## Cómo Ejecutar la Aplicación
 
 Para probar y visualizar el modelo de optimización mediante la interfaz gráfica interactiva, siga estos pasos:
